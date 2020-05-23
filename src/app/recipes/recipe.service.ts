@@ -2,11 +2,12 @@ import { Recipe } from './recipe.model';
 import { Injectable } from '@angular/core';
 import { Ingredient } from '../shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
-//import { Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 @Injectable()
 export class RecipeService{
-    // = new Subject<Recipe>();
+    recipeChanged = new Subject<Recipe[]>();
+
     private recipes: Recipe[] = [
         new Recipe('A new recipe', 
             'Card columns can also be extended and customized with some additional code.', 
@@ -35,7 +36,22 @@ export class RecipeService{
         return this.recipes[id];
     }
 
+    addRecipe(recipe:Recipe){
+        this.recipes.push(recipe);
+        this.recipeChanged.next(this.recipes.slice())
+    }
+
+    updateRecipe(id:number, newRecipe:Recipe){
+        this.recipes[id]=newRecipe;
+        this.recipeChanged.next(this.recipes.slice())
+    }
+
     addIngredientToShoppingList(ingredients: Ingredient[]){
         this.shoppinListService.addIngredients(ingredients);
+    }
+
+    deleteRecipe(id:number){
+        this.recipes.splice(id, 1)
+        this.recipeChanged.next(this.recipes.slice())
     }
 }

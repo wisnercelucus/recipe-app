@@ -1,0 +1,10 @@
+div .btn{
+    margin: 5px;
+}
+
+input.ng-invalid{
+    border: 1px solid red;
+}
+textarea.ng-invalid{
+    border: 1px solid red;
+}
